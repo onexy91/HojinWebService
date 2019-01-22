@@ -13,12 +13,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hojin.api.Posts;
+import com.hojin.component.FileUploadUtil;
+import com.hojin.dao.PortfolioDto;
 import com.hojin.dao.PostsDto;
+import com.hojin.service.PortfolioService;
 import com.hojin.service.PostsService;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 public class MainController {
 
 	private PostsService postsService;
+	private PortfolioService portfolioService;
+	private PortfolioDto portfoliodto; 
+	private FileUploadUtil uploadutil;
 	
 	protected String getRemoteIp() {
 		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
@@ -55,6 +64,25 @@ public class MainController {
 		return postsService.save(dto);
 
 	}
+	
+	
+	@RequestMapping("/uploadfile")
+	public String upload(HttpServletRequest request, @RequestPart MultipartFile files) {
+		log.info(getClientInfo()+ "/uploadfile"+" "+files.getOriginalFilename());
+		
+		  portfoliodto.setTitle(request.getParameter("title"));
+		  portfoliodto.setSubtitle(request.getParameter("subtitle"));
+		  portfoliodto.setContent(request.getParameter("content"));
+		  portfoliodto.setFilename(files.getOriginalFilename());
+		  
+		  if (!files.isEmpty()) {
+			  uploadutil.doWork(request, files);
+		  }
+		  portfolioService.save(portfoliodto);
+		 
+		
+		return "portfolio";
+	}
 
 	@GetMapping("/")
 	public String postList(HttpServletResponse response ,Model model,
@@ -68,6 +96,12 @@ public class MainController {
 			e.printStackTrace();
 		}
 		return "index";
+	}
+	
+	@GetMapping("/portfolio")
+	public String portfolio() {
+		
+		return "portfolio";
 	}
 
 }
