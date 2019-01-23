@@ -20,7 +20,7 @@ var main = {
 			data : JSON.stringify(data)
 		}).done(function() {
 			alert('게시글이 작성되었습니다.');
-			location.reload();
+			location.reload(true);
 		}).fail(function(error) {
 			alert(error);
 		});

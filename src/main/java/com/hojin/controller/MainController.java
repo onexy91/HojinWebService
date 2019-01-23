@@ -1,5 +1,6 @@
 package com.hojin.controller;
 
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hojin.api.PortfolioPosts;
 import com.hojin.api.Posts;
 import com.hojin.component.FileUploadUtil;
 import com.hojin.dao.PortfolioDto;
@@ -37,9 +39,9 @@ public class MainController {
 
 	private PostsService postsService;
 	private PortfolioService portfolioService;
-	private PortfolioDto portfoliodto; 
+	private PortfolioDto portfoliodto;
 	private FileUploadUtil uploadutil;
-	
+
 	protected String getRemoteIp() {
 		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
@@ -59,48 +61,58 @@ public class MainController {
 	@ResponseBody
 	@PostMapping("/posts")
 	public Long showView(@RequestBody PostsDto dto) {
-		log.info(getClientInfo() + "/posts"+ dto.getName()+" "+ dto.getAuthor()+" "+dto.getContent());
-		
+		log.info(getClientInfo() + "/posts" + dto.getName() + " " + dto.getAuthor() + " " + dto.getContent());
+
 		return postsService.save(dto);
 
 	}
-	
-	
+
 	@RequestMapping("/uploadfile")
 	public String upload(HttpServletRequest request, @RequestPart MultipartFile files) {
-		log.info(getClientInfo()+ "/uploadfile"+" "+files.getOriginalFilename());
-		
-		  portfoliodto.setTitle(request.getParameter("title"));
-		  portfoliodto.setSubtitle(request.getParameter("subtitle"));
-		  portfoliodto.setContent(request.getParameter("content"));
-		  portfoliodto.setFilename(files.getOriginalFilename());
-		  
-		  if (!files.isEmpty()) {
-			  uploadutil.doWork(request, files);
-		  }
-		  portfolioService.save(portfoliodto);
-		 
-		
-		return "portfolio";
+		log.info(getClientInfo() + "/uploadfile" + " " + files.getOriginalFilename());
+
+		portfoliodto.setTitle(request.getParameter("title"));
+		portfoliodto.setSubtitle(request.getParameter("subtitle"));
+		portfoliodto.setContent(request.getParameter("content"));
+		portfoliodto.setFilename(files.getOriginalFilename());
+
+		if (!files.isEmpty()) {
+			uploadutil.doWork(request, files);
+		}
+		portfolioService.save(portfoliodto);
+
+		return "redirect:/portfolio";
 	}
 
 	@GetMapping("/")
-	public String postList(HttpServletResponse response ,Model model,
-			@PageableDefault(sort = {"id"}, direction = Direction.DESC, size = 3) Pageable pageable) {
+	public String postList(HttpServletResponse response, Model model,
+			@PageableDefault(sort = { "id" }, direction = Direction.DESC, size = 3) Pageable pageable) {
 		log.info(getClientInfo() + "/");
-		Page<Posts>postList = postsService.findAllDesc(pageable);
+		Page<Posts> postList = postsService.findAllDesc(pageable);
 		try {
-			model.addAttribute("postlist",postList);	
-			
+			model.addAttribute("postlist", postList);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "index";
 	}
-	
+
 	@GetMapping("/portfolio")
-	public String portfolio() {
+	public String portfolio(HttpServletResponse response , Model model, 
+						@PageableDefault(sort = { "id" }, direction = Direction.DESC, size = 10) Pageable pageable) {
+		log.info(getClientInfo()+" "+"/portfolio");
 		
+		Page<PortfolioPosts> portfolioList = portfolioService.findAllDesc(pageable);
+		/*
+		 * //testcode List<PortfolioPosts> list = portfolioList.getContent(); for
+		 * (PortfolioPosts a : list) { System.out.println(a.getContent()); } //testcode
+		 */		try {
+		model.addAttribute("portfoliolist", portfolioList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "portfolio";
 	}
 
