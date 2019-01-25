@@ -133,8 +133,8 @@ section ul li:before {
 --------------------*/
 
 .navbar-default {
-	background-color: #222;
-	border-color: transparent
+	background-color: #333231e3;
+	border-color: transparent;
 }
 .navbar-default .navbar-brand {
 	color: #fff;
@@ -162,7 +162,7 @@ section ul li:before {
 	text-transform: uppercase;
 	font-weight: 600;
 	letter-spacing: 1px;
-	color:#000;
+	color:#efeded;
 }
 .navbar-default .nav li a:hover,.navbar-default .nav li a:focus {
 	color: #fed136;
@@ -182,7 +182,7 @@ section ul li:before {
 @media (min-width:768px) {
 	.navbar-default
 	{
-		background-color: rgba(255, 255, 255, 0.65);
+		background-color: rgba(2, 1, 1);
 		padding: 5px 0;
 		-webkit-transition:padding .3s;
 		-moz-transition:padding .3s;
@@ -199,8 +199,8 @@ section ul li:before {
 		border-radius: 3px
 	}
 	.navbar-default.navbar-shrink {
-		background-color: #FFFFFF;
-		border-bottom: 1px solid #828282;
+		background-color: #070707;
+		border-bottom: 1px solid #3fbe34;
 		padding: 5px 0
 	}
 	.navbar-default.navbar-shrink .navbar-brand {

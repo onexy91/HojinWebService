@@ -1,5 +1,7 @@
 package com.hojin.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,5 +22,9 @@ public class PortfolioService {
 	
 	public Page<PortfolioPosts> findAllDesc(Pageable pageable){
 		return repository.findAll(pageable);
+	}
+	
+	public List<PortfolioPosts> findAll(){
+		return repository.findAll();
 	}
 }

@@ -1,5 +1,6 @@
 package com.hojin.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,10 +61,16 @@ public class MainController {
 
 	@ResponseBody
 	@PostMapping("/posts")
-	public Long showView(@RequestBody PostsDto dto) {
+	public String showView(@RequestBody PostsDto dto) {
 		log.info(getClientInfo() + "/posts" + dto.getName() + " " + dto.getAuthor() + " " + dto.getContent());
-
-		return postsService.save(dto);
+		
+		try {
+			postsService.save(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/"; 
 
 	}
 
@@ -71,15 +78,9 @@ public class MainController {
 	public String upload(HttpServletRequest request, @RequestPart MultipartFile files) {
 		log.info(getClientInfo() + "/uploadfile" + " " + files.getOriginalFilename());
 
-		portfoliodto.setTitle(request.getParameter("title"));
-		portfoliodto.setSubtitle(request.getParameter("subtitle"));
-		portfoliodto.setContent(request.getParameter("content"));
-		portfoliodto.setFilename(files.getOriginalFilename());
-
 		if (!files.isEmpty()) {
 			uploadutil.doWork(request, files);
 		}
-		portfolioService.save(portfoliodto);
 
 		return "redirect:/portfolio";
 	}
@@ -88,28 +89,33 @@ public class MainController {
 	public String postList(HttpServletResponse response, Model model,
 			@PageableDefault(sort = { "id" }, direction = Direction.DESC, size = 3) Pageable pageable) {
 		log.info(getClientInfo() + "/");
+		
+		List<PortfolioPosts> portfolioList = portfolioService.findAll();
 		Page<Posts> postList = postsService.findAllDesc(pageable);
-		try {
-			model.addAttribute("postlist", postList);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		File file = new File(".");
+		
+		log.info("test " + file.getAbsolutePath());
+		
+		
+		model.addAttribute("postlist", postList);
+		model.addAttribute("portfoliolist", portfolioList);
+		
 		return "index";
 	}
 
 	@GetMapping("/portfolio")
-	public String portfolio(HttpServletResponse response , Model model, 
-						@PageableDefault(sort = { "id" }, direction = Direction.DESC, size = 10) Pageable pageable) {
-		log.info(getClientInfo()+" "+"/portfolio");
-		
+	public String portfolio(HttpServletResponse response, Model model,
+			@PageableDefault(sort = { "id" }, direction = Direction.DESC, size = 10) Pageable pageable) {
+		log.info(getClientInfo() + " " + "/portfolio");
+
 		Page<PortfolioPosts> portfolioList = portfolioService.findAllDesc(pageable);
 		/*
 		 * //testcode List<PortfolioPosts> list = portfolioList.getContent(); for
 		 * (PortfolioPosts a : list) { System.out.println(a.getContent()); } //testcode
-		 */		try {
-		model.addAttribute("portfoliolist", portfolioList);
-			
+		 */ try {
+			model.addAttribute("portfoliolist", portfolioList);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

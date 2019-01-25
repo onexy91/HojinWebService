@@ -51,7 +51,7 @@
 
 								<div class="input-field col s6">
 									<label class="col-md-1 control-label">파일선택</label>
-									<input multiple="multiple" type="file" name="files" />
+									<input type="file" name="files" />
 								</div>
 								<div class="col-lg-12 text-center">
 									<button class="btn indigo waves-effect waves-light"
@@ -92,10 +92,10 @@
 		    <div class="col-md-12">
 		 		<ul class="pager">
 		 			<li class="previous" th:if=${!portfoliolist.first}>
-		 				<a th:href="|/?page=${portfoliolist.number-1}|">&larr; older posts </a>
+		 				<a th:href="|/portfolio?page=${portfoliolist.number-1}|">&larr; older posts </a>
 		 			</li> 
 		 			<li class="next" th:if=${!portfoliolist.last}>
-		 				<a th:href ="|/?page=${portfoliolist.number+1}|">newer posts &rarr;</a>
+		 				<a th:href ="|/portfolio?page=${portfoliolist.number+1}|">newer posts &rarr;</a>
 		 			</li>
 		 		</ul>
 		 	</div> 
