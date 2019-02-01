@@ -81,27 +81,22 @@ public class MainController {
 		if (!files.isEmpty()) {
 			uploadutil.doWork(request, files);
 		}
-
+		
 		return "redirect:/portfolio";
 	}
 
 	@GetMapping("/")
-	public String postList(HttpServletResponse response, Model model,
+	public String postList(HttpServletRequest request, Model model,
 			@PageableDefault(sort = { "id" }, direction = Direction.DESC, size = 3) Pageable pageable) {
 		log.info(getClientInfo() + "/");
 		
 		List<PortfolioPosts> portfolioList = portfolioService.findAll();
 		Page<Posts> postList = postsService.findAllDesc(pageable);
 		
-		File file = new File(".");
-		
-		log.info("test " + file.getAbsolutePath());
-		
-		
 		model.addAttribute("postlist", postList);
 		model.addAttribute("portfoliolist", portfolioList);
 		
-		return "index";
+		return "main";
 	}
 
 	@GetMapping("/portfolio")

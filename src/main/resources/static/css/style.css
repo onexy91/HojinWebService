@@ -199,7 +199,7 @@ section ul li:before {
 		border-radius: 3px
 	}
 	.navbar-default.navbar-shrink {
-		background-color: #070707;
+		background-color: #333231;
 		border-bottom: 1px solid #3fbe34;
 		padding: 5px 0
 	}
@@ -604,6 +604,36 @@ figure.effect-bubba:hover p {
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
     background: #23AD21;
 }
+/*
+widgets
+*/
+.widget {
+	position: relative;
+	margin-bottom: 50px;
+}
+.widget-title {
+	margin-bottom: 30px;
+	font-family: "Dancing script", sans-serif;
+	font-size: 30px;
+}
+.mz-footer .widget-title {
+	margin: 20px 0px;
+}
+
+.widget-title span {
+	box-shadow: #d0c5c1 0 -4px 0 inset;
+	display: inline-block;
+	padding: 15px 0px 0px 0px;
+}
+.widget-socials a{
+	color:#ffffff;
+	text-decoration: none;
+}
+
+.widget-socials a:hover{
+	color:#fec503;
+}
+
 
 /*--------------------
 4.6. Team

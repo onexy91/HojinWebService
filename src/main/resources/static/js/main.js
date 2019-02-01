@@ -14,7 +14,7 @@ var main = {
 		if(!data.name=="" && !data.author == ""){
 		$.ajax({
 			type : 'POST',
-			url : 'posts',
+			url : '/posts', 
 			datatype : 'json',
 			contentType : 'application/json; charset=utf-8',
 			data : JSON.stringify(data)
